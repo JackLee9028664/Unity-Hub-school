@@ -1,0 +1,4 @@
+repository "obstacle game/obstacle game@9072351838699@cloud"
+  path "/"
+    br "/main"
+    co "/main"
