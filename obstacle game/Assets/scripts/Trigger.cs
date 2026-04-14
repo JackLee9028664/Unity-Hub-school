@@ -19,6 +19,7 @@ private void OnTriggerEnter(Collider other)
         projectile3.SetActive(true);
         projectile4.SetActive(true);
         projectile5.SetActive(true);
+        Destroy(gameObject);
     }
 }
 
