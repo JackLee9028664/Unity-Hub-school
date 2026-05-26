@@ -1,15 +1,67 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 public class Move : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+[SerializeField] InputAction thrust;
+[SerializeField] InputAction rotation;
+[SerializeField] float thrustStrength = 100f;
+[SerializeField] float rotationStrength = 100f;
+Rigidbody rb;
+AudioSource audioSource;
+
+private void Start() 
+{
+    rb = GetComponent<Rigidbody>();
+    audioSource = GetComponent<AudioSource>();
+}
+private void OnEnable() 
+{
+    thrust.Enable();
+    rotation.Enable();
+}
+
+private void FixedUpdate() 
+{
+  ProcessThrust();
+  ProcessRotation();
+}
+
+private void ProcessThrust() 
+{
+      if(thrust.IsPressed())
+        {
+           rb.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
+           if (!audioSource.isPlaying)
+         {
+              audioSource.Play();
+         }
+        }
+         else
+      {
+         audioSource.Stop();
+      }
+}
+
+  private void ProcessRotation()
     {
-        
+      float rotationInput = rotation.ReadValue<float>();
+     if(rotationInput < 0)
+        {
+           ApplyRotation(rotationStrength);
+        }
+
+        else if(rotationInput > 0)
+        {
+           ApplyRotation(-rotationStrength);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+ private void ApplyRotation(float rotationThisFrame)
     {
-        
+      rb.freezeRotation = true;
+         transform.Rotate(Vector3.forward * rotationThisFrame * Time.fixedDeltaTime);
+         rb.freezeRotation = false;
     }
+
 }
+
