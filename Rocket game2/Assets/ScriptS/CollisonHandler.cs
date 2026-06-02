@@ -15,7 +15,7 @@ private void OnCollisionEnter(Collision other)
         LoadNextLevel();
          break;
      default:
-    ReloadLevel();
+      Invoke ("ReloadLevel", 2f);
      break;
         }
 
